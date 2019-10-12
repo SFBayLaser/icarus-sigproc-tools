@@ -5,7 +5,7 @@
 
 <h1 align=center><font color="blue"><font size="7">ICARUS Signal Processing</font></font></h1><br>
 <p align=center>
-<font color="gray"><font size="3">A repository aimed at collecting tools and notebooks useful for studying waveforms/ROI/hit finding with the ICARUS LAr TPC</font></font><br>
+<font color="gray"><font size="3">A repository aimed at collecting tools and notebooks useful for studying waveforms/ROI/hit finding <br>with the ICARUS LAr TPC</font></font><br>
 </p>
 
 
