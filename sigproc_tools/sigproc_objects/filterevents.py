@@ -29,7 +29,6 @@ class FilterEvents:
         """
 
         eventNum  = 10
-        grouping  = 32
         numEvents = self.rawdigits.numEvents()
         nTicks    = self.rawdigits.numTicks(eventNum)
         nChannels = self.rawdigits.numChannels(eventNum)
