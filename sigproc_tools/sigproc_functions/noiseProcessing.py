@@ -21,7 +21,7 @@ def getCoherentNoiseCorrection(waveforms):
     rms              = np.sqrt(np.mean(np.square(waveLessCoherent),axis=0))
     return waveLessCoherent,median,rms
 
-def removeCoherentNoise(waveforms,grouping):
+def removeCoherentNoise(waveforms,grouping,nTicks):
     # Define placeholders for the output arrays
     waveLessCoherent = np.array([0])
     median           = np.array([0])

@@ -1,3 +1,8 @@
+
+# We will use plot-ly heavily for our graphics
+import plotly.graph_objects as go
+import plotly.subplots as subplots
+
 # Define some useful interactive 3D plotting
 # Note that this can be very memory intensive!!
 #
@@ -122,7 +127,7 @@ def plotEventView2D(waveforms):
 
 
 # This is a more fancy 3D rendering of an event display
-def plotEventView2D(waveforms):
+def plotEventView3D(waveforms):
     particleFig = go.Figure()
     
     particleFig.add_trace(go.Surface(z=waveformWithParticle, colorscale="Greys"))

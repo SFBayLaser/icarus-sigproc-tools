@@ -1,3 +1,10 @@
+# the source of life
+import numpy as np
+import scipy.stats as stats
+import scipy.signal as signal
+
+import math
+
 # Provide some of the basic functions for doing analysis of waveforms
 
 def computeCorrelations(waveforms,numEvents,nGroups):
@@ -92,8 +99,6 @@ def genWhiteNoiseWaveform(tickWidth,rms,shape):
     whiteNoiseElec = np.fft.irfft(whiteResponse)
     
     return whiteNoiseElec
-
-mport math
 
 # Define model function to be used to fit to the data above:
 def gaussParticle(x, *p):
