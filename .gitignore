@@ -21,7 +21,7 @@ weights*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*checkpoint.ipynb
+**/.ipynb_checkpoints/
 *.py[cod]
 *$py.class
 config
