@@ -27,8 +27,8 @@
         <li>The modules are designed to run in python 3.6 or above (tested in 3.7)</li>
         <li>One will need access to the standard python include packages numpy, scipy and matplotlib</li>
         <li>Access to the input root data files is with the <a href="https://uproot.readthedocs.io/en/latest/">uproot package</a> where you can find instructions on installaion (e.g. through pip or conda)</li>
-        <li>Graphics output is performed with the <a href="https://plotly/python/">plot-ly</a> package which provides for a nice interactive user experience (though, warning, can be memory intensive)</li>
-        <li>Also useful for the 3D event views is the <a href="https://ipywidgets.readthedocs.io/en/latest/">ipywidgets</a> package those this is not required for the basic analysis</li>
+        <li>Graphics output is performed with the <a href="https://plotly/python/">plot-ly</a> package which provides for a nice interactive user experience (though, warning, can be memory intensive), installation instructions can be found on the linked page (e.g. using pip or conda)</li>
+        <li>Also useful for the 3D event views is the <a href="https://ipywidgets.readthedocs.io/en/latest/">ipywidgets</a> package those this is not required for the basic analysis. Again installation instructions are on the linked page</li>
         <li>Finally, you will need to be able to run a <a href="https://jupyter-notebook.readthedocs.io/en/stable/">jupyter notebook</a>
     </ul>
     <li>The main idea is to have this installation running on your laptop (e.g. the above works nicely on a macbook pro) with input data files copied to your local machine. However, provided the above libraries are available, no reason to not run the cro-magnon form (i.e. over network to an icarus gpvm machine)</li>
@@ -42,8 +42,12 @@
     <li>Copy one of the example notebooks fromt the repository folder to your working folder (it is not recommended to open them directly since this will create a cache folder and, more important, when you execute the notebook it will create arrays and images which are quite large - it would not be good to upload those back to the root repository!)</li>
     <li>Open the notebook and in the first code block that is highlighted with "TODO" be sure to replace the path you see there with the full path to folder which contains the signal processing tools repository</li>
     <li>In the second "TODO" block set the fully qualified path to the location of your data files and the name of the file you want to read</li>
-    <li>Run the notebook!</li>
 </ul>
+
+<h2><font color="blue"><font size="5">Running</font></font></h2>
+<ul>
+    <li>Generally, in my terminal window I navigate to the working directory which contains the data files and a copy of the notebook I want to run. I tend to run jupyter notebook which, if run on my mac, will automatically open a windown in my default browser window display a directory of the folder I'm starting in. From here I can should see the notebook I want to run listed and can simply click on that to get it started. From there it is standard jupyter stuff</li>
+    <li><b>It is important to note that all of this code is designed to work on "swizzled" data!</b><br>This means the raw test data files must first be converted so the files contain "RawDigit" format TPC data.</li>
 
 <h2><font color="blue"><font size="5">Problems/Complaints/Hate mail</font></font></h2>
 <ul>
