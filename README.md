@@ -10,6 +10,7 @@
 </div>
 
 <!-- It seems that github simply ignores the "style" tags in within div tags... so try something different -->
+<center>
 <a href="http://icarus.lngs.infn.it"><img src="http://icarus.lngs.infn.it/img/n3.jpg" alt="ICARUS Experiment" style="border:0"></a>
 
 
@@ -17,6 +18,7 @@
     <h1><font color="blue"><font size="7">ICARUS Signal Processing</font></font></h1><br>
     <font color="gray"><font size="3">A repository aimed at collecting tools and notebooks useful for studying waveforms/ROI/hit finding with the ICARUS LAr TPC</font></font><br>
 </div>
+</center>
 </div>
 
 
