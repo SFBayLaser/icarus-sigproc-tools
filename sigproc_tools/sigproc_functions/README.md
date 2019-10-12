@@ -1,5 +1,5 @@
 <div style="text-align:center;border-style: solid;border-width: 1px;">
-    <h2><font color="blue"><font size="5">sigproc-functions</font></font></h2><br>
+    <h2><font color="blue"><font size="5">sigproc-functions</font></font></h2>
     <h2><font color="blue"><font size="5">A Collection of Python Modules Declaring Basic Functions for Filtering and Analysis of Noise on ICARUS Waveforms</font></font></h2><br>
 </div>
 <ul>
