@@ -1,31 +1,15 @@
-<div style="border-style: solid;border-width: 1px;">
-<div style="height: 200px; 
-            width: 750px; 
-            color: #ffffff;
-            margin: auto;
-            background-color: #ff6600; 
-            background-image: url(http://icarus.lngs.infn.it/img/n3.jpg); 
-            background-repeat: no-repeat;
-            background-position: center;">
-</div>
-
-<!-- It seems that github simply ignores the "style" tags in within div tags... so try something different -->
+<!-- It seems that github simply ignores the "style" tags within div tags... so try something different -->
 <p align=center>
 <a href="http://icarus.lngs.infn.it"><img src="http://icarus.lngs.infn.it/img/n3.jpg" alt="ICARUS Experiment" style="border:0"></a>
 </p>
 
-<div style="text-align:center">
-    <p align=center>
-    <h1><font color="blue"><font size="7">ICARUS Signal Processing</font></font></h1><br>
-    <font color="gray"><font size="3">A repository aimed at collecting tools and notebooks useful for studying waveforms/ROI/hit finding with the ICARUS LAr TPC</font></font><br>
-    </p>
-</div>
-</div>
+<h1 align=center><font color="blue"><font size="7">ICARUS Signal Processing</font></font></h1><br>
+<p align=center>
+<font color="gray"><font size="3">A repository aimed at collecting tools and notebooks useful for studying waveforms/ROI/hit finding with the ICARUS LAr TPC</font></font><br>
+</p>
 
 
-<div style="text-align:center;border-style: solid;border-width: 1px;">
-    <h2><font color="blue"><font size="5">General Arrangement</font></font></h2><br>
-</div>
+<h2><font color="blue"><font size="5">General Arrangement</font></font></h2><br>
 <ul>
     <li><b>sigproc_tools</b> - This folder is broken into two parts:</li>
         <ul>
