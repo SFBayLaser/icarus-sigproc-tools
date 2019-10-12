@@ -9,3 +9,20 @@ sites/site*/public/theme/
 textpattern/
 HISTORY.txt
 README.txt
+
+# typical files made in repo
+log*
+weights*
+*.txt
+*.csv
+*.root
+*.hdf5
+*.h5
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+.ipynb_checkpoints/
+*.py[cod]
+*$py.class
+config
+
