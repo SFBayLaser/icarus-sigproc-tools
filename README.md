@@ -48,6 +48,23 @@
 <ul>
     <li>Generally, in my terminal window I navigate to the working directory which contains the data files and a copy of the notebook I want to run. I tend to run jupyter notebook which, if run on my mac, will automatically open a windown in my default browser window display a directory of the folder I'm starting in. From here I can should see the notebook I want to run listed and can simply click on that to get it started. From there it is standard jupyter stuff</li>
     <li><b>It is important to note that all of this code is designed to work on "swizzled" data!</b><br>This means the raw test data files must first be converted so the files contain "RawDigit" format TPC data.</li>
+</ul>
+
+<h2><font color="blue"><font size="5">TODO</font></font></h2>
+<ul>
+    <li>Implementation of the full set of TPC responses functions (currently only electronics response available)</li>
+    <li>What is the correct number of channels to group for coherent noise subtraction? 32 or 64?</li>
+    <li>Develop algorithm for signal protection with the coherent noise subtraction</li>
+    <li>After coherent noise subtraction, what is the source of the remnant noise observed?</li>
+    <li>Develop a more sophisticated approach to overlaying a fake particle on existing waveforms</li>
+    <ul>
+        <li>Need protection for cases when input variables result in out of range parameters</li>
+        <li>Need to change input parameters to #electrons with internal converstions</li>
+        <li>etc.</li>
+    </ul>
+    <li>Implement the current deconvolution and ROI algorithms here for faster turnaround studies</li>
+    <li>And this is just to start!</li>
+</ul>
 
 <h2><font color="blue"><font size="5">Problems/Complaints/Hate mail</font></font></h2>
 <ul>

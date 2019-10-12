@@ -1,7 +1,8 @@
-<div style="text-align:center;border-style: solid;border-width: 1px;">
-    <h2><font color="blue"><font size="5">sigproc-functions</font></font></h2>
-    <h2><font color="blue"><font size="5">A Collection of Python Modules Declaring Basic Functions for Filtering and Analysis of Noise on ICARUS Waveforms</font></font></h2><br>
-</div>
+
+<h1><font color="blue"><font size="7">sigproc_functions</font></font></h1>
+<p align=center>
+<font color="gray"><font size="3">A Collection of Python Modules Declaring Basic Functions for Filtering and Analysis of Noise on ICARUS Waveforms</font></font><br>
+</p>
 <ul>
     <li><b>noiseProcessing.py</b></li>
         <ul>
