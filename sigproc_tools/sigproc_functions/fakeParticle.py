@@ -1,6 +1,8 @@
 # the source of life
 import numpy as np
-    
+from sigproc_tools.sigproc_functions.responseFunctions import *
+
+
 def genWhiteNoiseWaveform(tickWidth,rms,shape):
     # Let's develop the white noise power spectrum for ICARUS... 
     # we need to start with the electronics response
