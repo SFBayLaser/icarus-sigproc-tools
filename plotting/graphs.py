@@ -52,8 +52,8 @@ def plotEventView2D(waveforms):
                         method="restyle"
                     ),
                     dict(
-                        args=["colorscale", "Greens"],
-                        label="Greens",
+                        args=["colorscale", "Greys"],
+                        label="Greys",
                         method="restyle"
                     ),
                 ]),
