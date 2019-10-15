@@ -22,6 +22,8 @@
     <li><b>fakeParticle.py</b></li>
         <ul>
             <li><b>genWhiteNoiseWaveform</b> - this will generate a set of "white noise" waveforms. It starts by generating a waveform of purely random ADC values and then convolves this waveform with the electronics response (see above)</li>
+            <li><b>genSpikeWaveform</b> - given the full response for a given plane this will generate a waveform based on a delta function charge deposit of the given "numElectrons"</li>
+            <li><b>createParticleTrajectory</b> - given the full response for a given plane and the starting/ending wire/ticks, this will generate a particle trajectory corresponding to "numElectrons" deposited along the track at each wire.</li>
             <li><b>gaussParticle</b></li> - simply defines a guassian function to emulate the charge deposit on wires
             <li><b>createGaussianParticle</b></li> - this will generate a "particle trajectory" (simply a straight line) give the tick offset and track angle to the wires. The envelope of the trajectory will be a sliced gaussian (sliced along the wire direction)
             <li><b>createGaussDerivativeParticle</b></li> - this is meant to emulate a bipolar signal on wires by simply differentiating the gaussian function declared above. 
