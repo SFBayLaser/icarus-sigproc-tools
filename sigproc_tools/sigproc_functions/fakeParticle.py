@@ -1,37 +1,82 @@
 # the source of life
 import numpy as np
-from sigproc_tools.sigproc_functions.responseFunctions import *
+from sigproc_tools.sigproc_objects.fullresponse import FullResponse
 
 
-def genWhiteNoiseWaveform(tickWidth,rms,shape):
-    # Let's develop the white noise power spectrum for ICARUS... 
-    # we need to start with the electronics response
+def genWhiteNoiseWaveform(fullResponse,rms,shape):
+    # This function will return a set of white noise waveforms, both "raw" 
+    # and after convolution with the electronics respponse
     ticks = np.tile(np.arange(shape[1]),shape[0]).reshape(shape)
     
     print("ticks shape:",ticks.shape)
-
-    electronicsWaveform = electronicsReponse(ticks,tickWidth)
-    
-    print("electronicsWaveform shape:",electronicsWaveform.shape)
     
     # Ok, now produce a "white noise" waveform
     whiteNoise = np.random.normal(loc=0.,scale=rms,size=shape)
-    
-    # Add in a spike just for fun
-    #whiteNoise[:,1000] = 10*rms
 
     # FFTs of the two
-    elecFFT  = np.fft.rfft(electronicsWaveform)
     whiteFFT = np.fft.rfft(whiteNoise)
     
     # convolve
-    whiteResponse = np.multiply(elecFFT,whiteFFT)
+    whiteResponseFFT = np.multiply(fullResponse.ElecResponseFFT,whiteFFT)
     
     # back to time domain...
-    whiteNoiseElec = np.fft.irfft(whiteResponse)
-    
-    return whiteNoiseElec
+    whiteResponse = np.fft.irfft(whiteResponseFFT)
 
+    print("whiteResponse shape",whiteResponse.shape,", whiteNoise shape:",whiteNoise.shape)
+    
+    return whiteResponse,whiteNoise
+
+def genSpikeWaveform(fullResponse,numElectrons,tick,shape):
+    # This function will deposit numElectrons into a location "tick" of a set of waveforms of 
+    # shape "shape" and then convolve with the response functions input in fullResponse to 
+    # create a set of output waveforms
+    electronicsGain = 67.4  # e-/tick from 0.027 fC/(ADC*us) x 0.4 us/tick x 6242.2 e-/fC
+
+    if np.isscalar(shape):
+        waveformLen = shape
+    else:
+        waveformLen = shape[-1]
+    
+    # Ok, now produce a "white noise" waveform
+    inputWaveform = np.zeros(waveformLen)
+
+    inputWaveform[tick] = numElectrons / electronicsGain
+
+    # Now do the convolution to get a "real" waveform
+    inputWaveformFFT = np.fft.rfft(inputWaveform)
+
+    outputWaveformFFT = np.multiply(inputWaveformFFT,fullResponse.ResponseFFT)
+
+    outputWaveform = np.fft.irfft(outputWaveformFFT)
+
+    # Need to roll to take into account the T0 offset
+    outputWaveform = np.roll(outputWaveform,-int(fullResponse.T0Offset/fullResponse.TPCTickWidth))
+
+    if not np.isscalar(shape):
+        outputWaveform = np.tile(outputWaveform,shape[:-1]).reshape(shape)
+
+    return outputWaveform,inputWaveform
+
+def createParticleTrajectory(fullResponse,numElectrons,trackWireRange,trackTickRange,shape):
+    """
+    This function will create a particle trajectory of the type described by the input "fullResponse" 
+    respones functions. The particle will contain "numElectrons" pulses per wire, starting and ending 
+    at the coordinates given by trackWireRange and trackTickRange. The output waveforms will have
+    the shape given by "shape"
+    """
+    # Create an empty waveform array
+    waveforms = np.zeros(shape)
+
+    # Get track slope for setting tick as we setp across wires
+    trackSlope = (trackTickRange[1]-trackTickRange[0]) / (trackWireRange[1]-trackWireRange[0])
+
+    for wireIdx in range(trackWireRange[0],trackWireRange[1]):
+        tick = int(round(trackSlope * (wireIdx - trackWireRange[0]) + trackTickRange[0]))
+        waveforms[wireIdx],_ = genSpikeWaveform(fullResponse,numElectrons,tick,shape[-1])
+
+    return waveforms
+
+# Below code is "old" since it does not use the response functions. Left for reference
 # Define model function to be used to fit to the data above:
 def gaussParticle(x, *p):
     A, mu, sigma = p
