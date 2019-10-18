@@ -14,7 +14,7 @@ def plotEventView2D(waveforms):
     fig = go.Figure()
     
     # Add surface trace
-    fig.add_trace(go.Heatmap(z=waveforms, colorscale="Viridis"))
+    fig.add_trace(go.Heatmap(z=waveforms, colorscale="Greys"))
     
     # Update plot sizing
     fig.update_layout(
@@ -120,7 +120,7 @@ def plotEventView2D(waveforms):
                                  showarrow=False)
         ])
     
-    fig.show()
+    #fig.show()
     
     return fig
 
@@ -130,7 +130,7 @@ def plotEventView2D(waveforms):
 def plotEventView3D(waveforms):
     particleFig = go.Figure()
     
-    particleFig.add_trace(go.Surface(z=waveformWithParticle, colorscale="Greys"))
+    particleFig.add_trace(go.Heatmap(z=waveforms, colorscale="Greys"))
     
     
     # Update plot sizing
@@ -154,13 +154,23 @@ def plotEventView3D(waveforms):
             go.layout.Updatemenu(
                 buttons=list([
                     dict(
-                        args=["type", "surface"],
-                        label="3D Surface",
+                        args=["colorscale", "Greys"],
+                        label="Greys",
                         method="restyle"
                     ),
                     dict(
-                        args=["type", "heatmap"],
-                        label="Heatmap",
+                        args=["colorscale", "Viridis"],
+                        label="Viridis",
+                        method="restyle"
+                    ),
+                    dict(
+                        args=["colorscale", "Cividis"],
+                        label="Cividis",
+                        method="restyle"
+                    ),
+                    dict(
+                        args=["colorscale", "Blues"],
+                        label="Blues",
                         method="restyle"
                     )
                 ]),
@@ -172,17 +182,44 @@ def plotEventView3D(waveforms):
                 y=1.1,
                 yanchor="top"
             ),
+            go.layout.Updatemenu(
+                buttons=list([
+                    dict(
+                        args=["type", "heatmap"],
+                        label="Heatmap",
+                        method="restyle"
+                    ),
+                    dict(
+                        args=["type", "surface"],
+                        label="3D Surface",
+                        method="restyle"
+                    )
+                ]),
+                direction="down",
+                pad={"r": 10, "t": 10},
+                showactive=True,
+                x=0.37,
+                xanchor="left",
+                y=1.1,
+                yanchor="top"
+            ),
         ]
     )
     
     # Add annotation
     particleFig.update_layout(
         annotations=[
-            go.layout.Annotation(text="Trace type:", showarrow=False,
-                                 x=0, y=1.085, yref="paper", align="left")
+            go.layout.Annotation(text="colorscale", x=0, xref="paper", y=1.06, yref="paper",
+                                 align="left", showarrow=False),
+            go.layout.Annotation(text="Trace Type", x=0.25, xref="paper", y=1.06,
+                                 yref="paper", showarrow=False)
+#            go.layout.Annotation(text="Trace type:", showarrow=False,
+#                                 x=0, y=1.085, yref="paper", align="left")
         ]
     )
     
-    particleFig.show()
+    #particleFig.show()
+
+    return particleFig
 
 
