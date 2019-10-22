@@ -1,5 +1,6 @@
 # the source of life
 import numpy as np
+import math
 from sigproc_tools.sigproc_objects.fullresponse import FullResponse
 
 
@@ -17,7 +18,7 @@ def genWhiteNoiseWaveform(fullResponse,rms,shape):
     whiteFFT = np.fft.rfft(whiteNoise)
     
     # convolve
-    whiteResponseFFT = np.multiply(fullResponse.ElecResponseFFT,whiteFFT)
+    whiteResponseFFT = np.multiply(fullResponse.ResponseFFT,whiteFFT) #ElecResponseFFT,whiteFFT)
     
     # back to time domain...
     whiteResponse = np.fft.irfft(whiteResponseFFT)
@@ -60,19 +61,70 @@ def genSpikeWaveform(fullResponse,numElectrons,tick,shape):
 def createParticleTrajectory(fullResponse,numElectrons,trackWireRange,trackTickRange,shape):
     """
     This function will create a particle trajectory of the type described by the input "fullResponse" 
-    respones functions. The particle will contain "numElectrons" pulses per wire, starting and ending 
-    at the coordinates given by trackWireRange and trackTickRange. The output waveforms will have
-    the shape given by "shape"
+    respones functions. The particle will deposit a number of electrons per wire based on the input 
+    "numElectrons" which is number of electrons per mm, starting and ending at the coordinates given 
+    by trackWireRange and trackTickRange. The output waveforms will have the shape given by "shape"
     """
     # Create an empty waveform array
     waveforms = np.zeros(shape)
 
-    # Get track slope for setting tick as we setp across wires
-    trackSlope = (trackTickRange[1]-trackTickRange[0]) / (trackWireRange[1]-trackWireRange[0])
+    # Some handy constants
+    mmPerTick        = 0.64                   # so this is 1.6 mm/us * 0.4 us/tick
+    mmPerWire        = 3.                     # so this is 3 mm/wire
+    dTdW             = mmPerTick/mmPerWire    # This changes slope calculated in delta ticks / delta wires to unitless
+    deltaWireInTicks = mmPerWire/mmPerTick   # so this is 3 mm / ticks2mm giving us wire spacing in ticks
+
+    # Get track slope for setting tick as we step across wires
+    tanThetaTW = (trackTickRange[1]-trackTickRange[0]) / (trackWireRange[1]-trackWireRange[0])
+    tanTheta   = dTdW * tanThetaTW
+    cosTheta   = 1./math.sqrt(1. + tanTheta*tanTheta)
+    sinTheta   = tanTheta * cosTheta
 
     for wireIdx in range(trackWireRange[0],trackWireRange[1]):
-        tick = int(round(trackSlope * (wireIdx - trackWireRange[0]) + trackTickRange[0]))
-        waveforms[wireIdx],_ = genSpikeWaveform(fullResponse,numElectrons,tick,shape[-1])
+        # The tricky part about this is that as the track angle becomes closer to the direction of 
+        # the wire you need to spread the charge over more than a single tick... and so we need
+        # to try to calcuate that here...
+        # What is the central tick?
+        #tick = int(round(tanThetaTW * (wireIdx - trackWireRange[0]) + trackTickRange[0]))
+        # Note that convention is to follow the track by increasing wire number
+        tickIn  = tanThetaTW * (wireIdx - trackWireRange[0] - 0.5) + trackTickRange[0]
+        tickOut = tanThetaTW * (wireIdx - trackWireRange[0] + 0.5) + trackTickRange[0]
+
+        # Watch for out of bounds conditions
+        if tickIn < 0 or tickIn > 4095 or tickOut < 0 or tickOut > 4095:
+            break;
+
+        # First let's deetermine the total arclength for a 1 wire gap (-1/2 to +1/2) in mm
+        arcLenInToOut = mmPerWire / cosTheta
+
+        # how many intervening ticks?
+        if tickIn < tickOut:  # equivalent to tanThetaTW > 0
+            interveningTicks = math.floor(tickOut) - math.floor(tickIn)
+        else:
+            interveningTicks = math.floor(tickIn) - math.floor(tickOut)
+
+        # Loop through the steps by the number of intervening wires
+        for stepIdx in range(interveningTicks):
+            # Here we take steps...
+            tick     = math.floor(tickIn)
+            tickNext = math.floor(tickIn+1)
+
+            if tickIn > tickOut:
+                tickNext = math.floor(tickIn-1)
+
+            stepArcLen = (tickNext - tickIn) * mmPerTick / sinTheta
+        
+            tempWaveforms,_     = genSpikeWaveform(fullResponse,numElectrons*stepArcLen,tick,shape[-1])
+            waveforms[wireIdx] += tempWaveforms
+
+            tickIn         = tickNext
+            arcLenInToOut -= stepArcLen
+ 
+        # Now handle the final step
+        tick   = math.floor(tickOut)
+
+        tempWaveforms,_     = genSpikeWaveform(fullResponse,numElectrons*arcLenInToOut,tick,shape[-1])
+        waveforms[wireIdx] += tempWaveforms
 
     return waveforms
 
