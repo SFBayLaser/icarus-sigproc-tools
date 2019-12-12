@@ -21,11 +21,11 @@ def genWhiteNoiseWaveform(fullResponse,rms,shape):
     whiteResponseFFT = np.multiply(fullResponse.ResponseFFT,whiteFFT) #ElecResponseFFT,whiteFFT)
     
     # back to time domain...
-    whiteResponse = np.fft.irfft(whiteResponseFFT)
+    whiteResponse = no.rint(np.fft.irfft(whiteResponseFFT))
 
     print("whiteResponse shape",whiteResponse.shape,", whiteNoise shape:",whiteNoise.shape)
     
-    return whiteResponse,whiteNoise
+    return whiteResponse.astype(int),whiteNoise
 
 def genSpikeWaveform(fullResponse,numElectrons,tick,shape):
     # This function will deposit numElectrons into a location "tick" of a set of waveforms of 
