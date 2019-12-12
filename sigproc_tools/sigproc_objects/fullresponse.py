@@ -16,7 +16,7 @@ class FullResponse:
     describing the charge deposition on a wire from a charge deposition in the TPC (typicall a delta function) and then the 
     response due to the TPC electronics. 
     """
-    def __init__(self,responsesFolder,responseFile,normalization=-1.):
+    def __init__(self,responsesFolder,responseFile,filter,normalization=-1.):
         """
         args: responsesFolder is the fully qualified path to the directory containing the response files
               responseFile is tthe name of the file to input
@@ -58,6 +58,9 @@ class FullResponse:
         # Get the full response T0 offset (returned in us)
         self.T0Offset = self.FieldResponse.t0Offset + self.ElectronicsResponse.t0Offset
 
-        # TODO add in the deconvolution
+        # TODO add in the deconvolution (like here)
+        self.Filter           = filter
+        self.DeconvolutionFFT = np.divide(self.Filter.filter,self.ResponseFFT,out=np.zeros_like(self.Filter.filter),where=np.absolute(self.ResponseFFT)!=0.)
+
 
  
