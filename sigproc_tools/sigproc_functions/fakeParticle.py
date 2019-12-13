@@ -48,7 +48,7 @@ def genSpikeWaveform(fullResponse,numElectrons,tick,shape):
 
     outputWaveformFFT = np.multiply(inputWaveformFFT,fullResponse.ResponseFFT)
 
-    outputWaveform = np.fft.irfft(outputWaveformFFT)
+    outputWaveform = np.rint(np.fft.irfft(outputWaveformFFT))
 
     # Need to roll to take into account the T0 offset
     outputWaveform = np.roll(outputWaveform,-int(fullResponse.T0Offset/fullResponse.TPCTickWidth))
@@ -56,7 +56,7 @@ def genSpikeWaveform(fullResponse,numElectrons,tick,shape):
     if not np.isscalar(shape):
         outputWaveform = np.tile(outputWaveform,shape[:-1]).reshape(shape)
 
-    return outputWaveform,inputWaveform
+    return outputWaveform.astype(int),inputWaveform
 
 def createParticleTrajectory(fullResponse,numElectrons,trackWireRange,trackTickRange,shape):
     """
@@ -67,6 +67,7 @@ def createParticleTrajectory(fullResponse,numElectrons,trackWireRange,trackTickR
     """
     # Create an empty waveform array
     waveforms = np.zeros(shape)
+    inputWave = np.zeros(shape)
 
     # Some handy constants
     mmPerTick        = 0.64                   # so this is 1.6 mm/us * 0.4 us/tick
@@ -114,8 +115,9 @@ def createParticleTrajectory(fullResponse,numElectrons,trackWireRange,trackTickR
 
             stepArcLen = (tickNext - tickIn) * mmPerTick / sinTheta
         
-            tempWaveforms,_     = genSpikeWaveform(fullResponse,numElectrons*stepArcLen,tick,shape[-1])
-            waveforms[wireIdx] += tempWaveforms
+            tempWaveforms,tempInput  = genSpikeWaveform(fullResponse,numElectrons*stepArcLen,tick,shape[-1])
+            waveforms[wireIdx]      += tempWaveforms
+            inputWave[wireIdx]      += tempInput
 
             tickIn         = tickNext
             arcLenInToOut -= stepArcLen
@@ -123,10 +125,11 @@ def createParticleTrajectory(fullResponse,numElectrons,trackWireRange,trackTickR
         # Now handle the final step
         tick   = math.floor(tickOut)
 
-        tempWaveforms,_     = genSpikeWaveform(fullResponse,numElectrons*arcLenInToOut,tick,shape[-1])
+        tempWaveforms,tempInput    = genSpikeWaveform(fullResponse,numElectrons*arcLenInToOut,tick,shape[-1])
         waveforms[wireIdx] += tempWaveforms
+        inputWave[wireIdx] += tempInput
 
-    return waveforms
+    return waveforms,inputWave
 
 # Below code is "old" since it does not use the response functions. Left for reference
 # Define model function to be used to fit to the data above:
