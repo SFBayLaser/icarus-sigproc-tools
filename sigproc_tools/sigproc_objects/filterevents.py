@@ -38,6 +38,7 @@ class FilterEvents:
         
         # Set up to loop over events
         # Define placeholders for the output arrays
+        self.rawWaveforms        = np.ndarray([numEvents,nChannels,nTicks])
         self.waveLessPedAll      = np.ndarray([numEvents,nChannels,nTicks])
         self.pedestalsAll        = np.ndarray([numEvents,nChannels])
         self.rmsAll              = np.ndarray([numEvents,nChannels])
@@ -50,10 +51,10 @@ class FilterEvents:
         print("Applying filtering to ",numEvents,"events")
         
         for eventNo in range(numEvents):
-            locWaveforms                       = self.rawdigits.getWaveforms(eventNo)
+            self.rawWaveforms[eventNo]         = self.rawdigits.getWaveforms(eventNo)
             self.waveLessPedAll[eventNo],      \
             self.pedestalsAll[eventNo],        \
-            self.rmsAll[eventNo]               = getPedestalsAndRMS(locWaveforms)
+            self.rmsAll[eventNo]               = getPedestalsAndRMS(self.rawWaveforms[eventNo,:,:])
             self.waveLessCoherentAll[eventNo], \
             self.medianAll[eventNo],           \
             self.intrinsicRMSAll[eventNo]      = removeCoherentNoise(self.waveLessPedAll[eventNo],grouping,nTicks)
