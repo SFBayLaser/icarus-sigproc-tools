@@ -2,7 +2,7 @@
 import numpy as np
 
 # We are not directly using matplotlib but it is still useful for quick checking plots
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 # We will use plot-ly heavily for our graphics
