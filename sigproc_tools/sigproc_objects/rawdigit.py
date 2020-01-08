@@ -41,10 +41,12 @@ class RawDigit:
         if self.numChannels(eventNum) > 0:
             nTicks    = self.numTicks(eventNum)
             nChannels = self.numChannels(eventNum)
-            waveforms = self.eventsFolder.array(self.producer+"obj.fADC",entrystart=eventNum,entrystop=eventNum+1,flatten=True)
-            waveforms = np.concatenate([waveforms,[0,nTicks]])  # This adds the pattern "0, 4096" to the end of the 1D array
-            waveforms = waveforms.reshape(nChannels,nTicks+2)   # Now we make a 2D array of 384 channels by 4096+2 ticks
-            return waveforms[:,:-2]
+            buffer    = self.eventsFolder.array(self.producer+"obj.fADC",entrystart=eventNum,entrystop=eventNum+1,flatten=True)
+            waveforms = np.array(buffer[0]).reshape(nChannels,nTicks)
+    #        waveforms = np.concatenate([waveforms,[0,nTicks]])  # This adds the pattern "0, 4096" to the end of the 1D array
+    #        waveforms = waveforms.reshape(nChannels,nTicks+2)   # Now we make a 2D array of 384 channels by 4096+2 ticks
+    #        return waveforms[:,:-2]
+            return waveforms
         else:
             return numpy.zeros(shape=(1,1))
         
