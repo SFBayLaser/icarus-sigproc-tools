@@ -136,7 +136,7 @@ def plotEventView3D(waveforms):
     # Update plot sizing
     particleFig.update_layout(
         width=800,
-        height=900,
+        height=800,
         autosize=False,
         margin=dict(t=0, b=0, l=0, r=0),
         template="plotly_white",
