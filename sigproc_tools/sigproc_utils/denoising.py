@@ -28,19 +28,13 @@ class Denoiser:
         '''
         Coherent Noise Removal with 2D Morphological Filters
         '''
-        selectVals =  ROOT.std.vector('std::vector<bool>')(
-            self.numChannels, ROOT.std.vector('bool')(self.numTicks))
-        roi = ROOT.std.vector('std::vector<bool>')(
-            self.numChannels, ROOT.std.vector('bool')(self.numTicks))
-        filteredWaveforms =  sproc.pyutil.as_float32_vector_2d(self.fullEvent.astype(np.float32))
-        intrinsicRMS =  ROOT.std.vector('std::vector<float>')(
-            self.numChannels, ROOT.std.vector('float')(self.numTicks))
-        correctedMedians =  ROOT.std.vector('std::vector<float>')(
-            self.numChannels, ROOT.std.vector('float')(self.numTicks))
-        waveLessCoherent =  ROOT.std.vector('std::vector<float>')(
-            self.numChannels, ROOT.std.vector('float')(self.numTicks))
-        morphedWaveforms =  ROOT.std.vector('std::vector<float>')(
-            self.numChannels, ROOT.std.vector('float')(self.numTicks))
+        selectVals        = ROOT.std.vector('std::vector<bool>')(self.numChannels, ROOT.std.vector('bool')(self.numTicks))
+        roi               = ROOT.std.vector('std::vector<bool>')(self.numChannels, ROOT.std.vector('bool')(self.numTicks))
+        filteredWaveforms = sproc.pyutil.as_float32_vector_2d(self.fullEvent.astype(np.float32))
+        intrinsicRMS      = ROOT.std.vector('std::vector<float>')(self.numChannels, ROOT.std.vector('float')(self.numTicks))
+        correctedMedians  = ROOT.std.vector('std::vector<float>')(self.numChannels, ROOT.std.vector('float')(self.numTicks))
+        waveLessCoherent  = ROOT.std.vector('std::vector<float>')(self.numChannels, ROOT.std.vector('float')(self.numTicks))
+        morphedWaveforms  = ROOT.std.vector('std::vector<float>')(self.numChannels, ROOT.std.vector('float')(self.numTicks))
 
         # Run 2D ROI finding and denoising.
         self.denoiser.removeCoherentNoise2D(

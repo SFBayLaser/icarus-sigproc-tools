@@ -26,7 +26,7 @@ class RawDigit:
         nChannels = self.obj[eventNum]
         return nChannels
     
-    def numTicks(self,eventNum,channelNum=0):
+    def numTicks(self,eventNum=0,channelNum=0):
         samples = self.eventsFolder.array(self.producer+"obj.fSamples",entrystart=eventNum,entrystop=eventNum+1,flatten=True)
         return samples[channelNum]
     
@@ -61,4 +61,12 @@ class RawDigit:
     def getChannels(self,eventNum):
         channels = self.eventsFolder.array(self.producer+"obj.fChannel",entrystart=eventNum,entrystop=eventNum+1,flatten=True)
         return channels
+        
+    def getPedestals(self,eventNum):
+        pedestals = self.eventsFolder.array(self.producer+"obj.fPedestal",entrystart=eventNum,entrystop=eventNum+1,flatten=True)
+        return pedestals
+        
+    def getRMSVals(self,eventNum):
+        rmsVals = self.eventsFolder.array(self.producer+"obj.fSigma",entrystart=eventNum,entrystop=eventNum+1,flatten=True)
+        return rmsVals
 

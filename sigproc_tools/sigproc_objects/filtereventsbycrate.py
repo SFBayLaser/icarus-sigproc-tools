@@ -22,23 +22,28 @@ class FilterEventsByCrate:
         self.numChannelsPerCrate = 576
         self.startIndex          = self.numChannelsPerCrate * crateNum
         self.stopIndex           = self.startIndex + self.numChannelsPerCrate
+        self.numEvents           = self.rawdigits.numEvents()
+        self.numTicks            = self.rawdigits.numTicks()
 
     # Given direct access to the RawDigits to recover its functionality 
     def getRawDigits(self):
         return self.rawdigits
 
     # Run the basic event loop
-    def filterEvents(self,grouping):
+    def filterEvents(self,grouping,totalEvents=1000000):
         """
         Here we perform the noise filtering over all of the RawDigits available in the input file
         args: grouping - the number of channels to group together for coherent noise subtraction
         """
 
-        eventNum  = 10
+        eventNum  = 0
         numEvents = self.rawdigits.numEvents()
-        nTicks    = self.rawdigits.numTicks(eventNum)
+        nTicks    = self.rawdigits.numTicks()
         nChannels = self.numChannelsPerCrate
         nGroups   = nChannels // grouping
+
+        if numEvents > totalEvents : 
+            numEvents = totalEvents
         
         print("Number of channels:",nChannels,", grouping:",grouping,", nGroups:",nGroups,", start/stop:",self.startIndex,"/",self.stopIndex)
 
