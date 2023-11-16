@@ -26,8 +26,12 @@ class FieldResponse:
 
         key = str(self.hist_file.keys()[0])
 
-        self.folderName    = key[key.index('\'')+1:str(key).index(';')]
-        th1fhistogram      = self.hist_file[self.folderName].numpy()
+        print("FieldResponse key:",key)
+
+        # This is outdated?
+        #self.folderName    = key[key.index('\'')+1:str(key).index(';')]
+        self.folderName    = key
+        th1fhistogram      = self.hist_file[self.folderName].to_numpy()
 
         self.timeBins      = th1fhistogram[1]
         self.responseVals  = th1fhistogram[0]
